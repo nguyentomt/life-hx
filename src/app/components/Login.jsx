@@ -123,7 +123,7 @@ const Login = ({ setUser }) => {
 
 
   return (
-     <div className="my-[2rem] mx-auto" id='loginSignup'>
+     <div className="mt-[1rem] md:mt-[2rem] mx-auto" id='loginSignup'>
         <h1 className={moiraiOne.className}>LifeHx</h1>
         <div className='userInfo'>
             <form id="login" method='POST' action='/login'>

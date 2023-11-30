@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import * as jwtDecode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import { NextResponse } from 'next/server';
 import { Moirai_One } from 'next/font/google'
 
@@ -69,6 +69,7 @@ const Login = ({ setUser }) => {
 
 //////////////////////
 // FOR GOOGLE OAUTH //
+useEffect((setUser) => {
   async function handleCallbackResponse(response) {
     const userObject = jwtDecode(response.credential);
     const username = userObject.name;
@@ -101,29 +102,32 @@ const Login = ({ setUser }) => {
 
   }
 
+  // These google objects came from a script tag which can be found in index.html
+  /* global google */
+  google.accounts.id.initialize({
+    client_id: '745677008135-28koou137ibajp5jnjalltuu1slpbsde.apps.googleusercontent.com',
+    callback: handleCallbackResponse
+  });
+  google.accounts.id.renderButton(
+    document.getElementById('oauthBtn'),
+    {theme: 'outline', size: 'large'}
+  );
+  // google.accounts.id.prompt();
+}, []);
+
+  
+
   function handleSignOut(event) {
     setUser({});
     document.getElementById("oauthBtn").hidden = false;
   }
   
-  useEffect(() => {
-    // These google objects came from a script tag which can be found in index.html
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: '745677008135-28koou137ibajp5jnjalltuu1slpbsde.apps.googleusercontent.com',
-      callback: handleCallbackResponse
-    });
-    google.accounts.id.renderButton(
-      document.getElementById('oauthBtn'),
-      {theme: 'outline', size: 'large'}
-    );
-    // google.accounts.id.prompt();
-  }, []);
+  
   ////////////////////////////////////// END GOOGLE OAUTH //////////////////////////////////
 
 
   return (
-     <div className="mt-[1rem] mb-[2rem] md:my-[2rem] mx-auto" id='loginSignup'>
+     <div className="mt-[1rem] mb-[4rem] md:my-[1rem] md:mx-auto" id='loginSignup'>
         <h1 className={moiraiOne.className}>LifeHx</h1>
         <div className='userInfo'>
             <form id="login" method='POST' action='/login'>
